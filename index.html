@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ESP32 Mini Weather Station</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <!-- Alert Banner -->
+    <div id="disconnect-alert" class="alert-banner hidden">
+      <div class="alert-content">
+        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-alert" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span class="alert-message"><strong>ESP32 Disconnected</strong> &mdash; Please connect or power on your ESP32 device to view live sensor readings.</span>
+      </div>
+    </div>
+
+    <div class="container">
+      <header class="header">
+        <div class="header-left">
+          <h1>ESP32 Mini Weather Station</h1>
+          <p class="last-updated" id="last-updated">Waiting for data...</p>
+        </div>
+        <div class="header-right">
+          <div class="status-badge connecting" id="status-badge">
+            <span class="pulse-dot" id="status-dot"></span>
+            <span id="status-text">Connecting...</span>
+          </div>
+        </div>
+      </header>
+
+      <main class="dashboard-grid" id="dashboard-content">
+        <!-- Temperature -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Temperature</h3>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <div class="card-body">
+            <div class="value-display">
+              <span class="value" id="temp-val">--</span>
+              <span class="unit">°C</span>
+            </div>
+            <div class="visual-bar-container">
+              <div class="bar-fill temp-fill" id="temp-bar" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Humidity -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Humidity</h3>
+            <span class="badge" id="hum-status">--</span>
+          </div>
+          <div class="card-body">
+            <div class="value-display">
+              <span class="value" id="hum-val">--</span>
+              <span class="unit">%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Air Quality -->
+        <div class="card">
+          <div class="card-header">
+            <h3>Air Quality Score</h3>
+            <span class="badge" id="aqi-status">--</span>
+          </div>
+          <div class="card-body">
+            <div class="value-display">
+              <span class="value" id="aqi-val">--</span>
+              <span class="unit">%</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- MQ-135 Raw -->
+        <div class="card">
+          <div class="card-header">
+            <h3>MQ-135 Raw Sensor</h3>
+            <span class="badge badge-neutral">ADC</span>
+          </div>
+          <div class="card-body">
+            <div class="value-display">
+              <span class="value" id="mq-val">----</span>
+              <span class="unit">/ 4095</span>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <section class="chart-section card" id="chart-container">
+        <div class="card-header">
+          <h3>Historical Trends</h3>
+        </div>
+        <div class="chart-wrapper">
+          <canvas id="trendChart"></canvas>
+        </div>
+      </section>
+    </div>
+    
+    <script type="module" src="/main.js"></script>
+  </body>
+</html>
